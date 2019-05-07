@@ -1,48 +1,4 @@
-# **Traffic Sign Recognition** 
 
-
-
----
-
-**Build a Traffic Sign Recognition Project**
-
-The goals / steps of this project are the following:
-* Load the data set given as part of the project
-* Explore, summarize and visualize the data set
-* Design, train and test a model architecture
-* Use the model to make predictions on new images
-* Analyze the softmax probabilities of the new images
-* Summarize the results with a written report
-
-
-## Rubric Points
-
-#### Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
-
-Here I have considered all the RUBRIC points and given comments/explanations for each of these points)
-
-
-### Data Set Summary & Exploration
-
-
-#### 1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
-
-I used the pickled data provided here with project for training, testing and validation. I used images downloaded from Internet to test the model to see if the model recognizes the new images. There are two sets of images with two different shapes used in this project.
-
-        Training dataset includes 34799 entries
-        Test 12630 entries 
-        Validation 4410 entries
-        
-Data shape is 
-         X train shape is  (34799, 32, 32, 3)
-         Y train shape is  (34799,)
-         X test shape is  (12630, 32, 32, 3)
-         Y test shape is  (12630,)
-         X valid shape is  (4410, 32, 32, 3)
-         Y valid shape is  (4410,)
-
-**a.  Load dataset from pickled data**
-Load the data from picked data for all three datasets - training , testing and validation data. Load the features and labels into two separate arrays for each of these environment. ensure that X and Y arrays are of same length.  List the shape of the data
 
 ```python
 # load pickled data consisting of three environments
@@ -93,17 +49,6 @@ print(" Y valid shape is ", Y_valid.shape)
      X valid shape is  (4410, 32, 32, 3)
      Y valid shape is  (4410,)
 
-
-
-
-
-#### 2. Include an exploratory visualization of the dataset.
-
-First print a random image to check if the data is loaded correctly. Explore the data to
-
-1. Get the number of entries for each of the environment
-2. Select randomly 10 images and display the images
-3. Create a histogram by Label frequency to understand the frequency distribution of the data by various classes
 
 
 ```python
@@ -214,32 +159,7 @@ plt.show()
 
 
 
-
-
-### Design and Test a Model Architecture
-
-
-### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
-
-Following are the pre-processing techniques used in this project:
-
-1. Greyscale  - Images are converted to grey scale to increase the speed and effeciency of the training
-2. Check if the data has to be shuffled by printing first 1000 data. Shuffling of the data as the data is in sorted order by classes. Shuffling is required before training
-3. Normalization - Data is normalized using the below formula. I believe it helps in training with a single learning rate 
-   X_test_normalized = (X_test - X_test_min)/(X_test_max - X_test_min). Though mean is not zero, it is very close to zero compared to the original data setup
-4.  functions for data augmentation used are random scaling, random warp, random brightness
-
-### Check the bin count 
-
-[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42] 
- [ 180 1980 2010 1260 1770 1650  360 1290 1260 1320 1800 1170 1890 1920  690 540  360  990 1080  180  300  270  330  450  240 1350  540  210  480  240  390  690  210  599  360 1080  330  180 1860  270  300  210  210]
-
-Above are the bin count for 43 classes. minimum sample for label is 180.
-
-Check the distribution of the shuffled data to ensure shuffling is proper.
-
 ```python
-
 # convert to grey scale
 
 X_train_rgb = X_train
@@ -894,21 +814,7 @@ print(Y_train[501:1000])
      10 11 11 32  9  8 33 29  7 11 10 28 32 31  2 16 10 13 10  1 40  4 27  7]
 
 
-#### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
-The Convolution neural network Architecture consists of following five layers:
-
-#####   Layer 1: Convolutional layer with Input as 32x32x1 and Output as 28x28x6 with a RELU activation function followed a 		pooling with input as 28x28x6 and Output as 14x14x6.
-
-#####   Layer 2: Output of Layer 1 as input to Convolutional layer with output as 10x10x16 and with a RELU activation function         followed a pooling with input as 10x10x16 and flattened Output as 5x5x16 
-
-#####   Layer 3: Output of Layer 2 input to fully connected layer followed by RELU activation function. Also implemented drop 		out in layer 3 to increase the accuracy. Accuracy increased from 92% to 95% with drop out
-
-#####   Layer 4: output of Layer 3 to fully connected layer followed by RELU activation function with dropout. Output = 84.
-   
-#####    Layer 5: Fully connected layer with input of 84 and output as 10 that returns the final logits
-
-  
 ```python
 import tensorflow as tf
 EPOCHS = 52
@@ -996,48 +902,6 @@ print('done')
 
 
 
-#### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
-
-I used a batch size of 84 and Epochs of 52. I started with a batch size of 128 and epochs of 40, but the accuracy was very less. so increase the Epochs and reduced the batch size and results were better.
-
-Used a learning rate of .0009
-
-Following are the results with and without drop out with different batch size and Epochs.
-
-Without drop out				without drop out			with drop out
-EPOCHS = 40					EPOCHS = 52				EPOCHS = 52
-BATCH_SIZE = 128				BATCH_SIZE = 84				BATCH_SIZE = 84
-				
-Training...					Training...				Training...
-EPOCH 1 ...					EPOCH 1 ...				EPOCH 1 ...
-Validation Accuracy = 0.712			Validation Accuracy = 0.702		Validation Accuracy = 0.571
-				
-EPOCH 2 ...					EPOCH 2 ...				EPOCH 2 ...
-Validation Accuracy = 0.810			Validation Accuracy = 0.790		Validation Accuracy = 0.765
-				
-EPOCH 3 ...					EPOCH 3 ...				EPOCH 3 ...
-Validation Accuracy = 0.837			Validation Accuracy = 0.838		Validation Accuracy = 0.849
-				
-EPOCH 4 ...					EPOCH 4 ...				EPOCH 4 ...
-Validation Accuracy = 0.881			Validation Accuracy = 0.847		Validation Accuracy = 0.848
-				
-EPOCH 5 ...					EPOCH 5 ...				EPOCH 5 ...
-Validation Accuracy = 0.872			Validation Accuracy = 0.874		Validation Accuracy = 0.882
-				
----------------------------------------------------------------------------------------------------
-				
-EPOCH 40 ...					EPOCH 40 ...				EPOCH 40 ...
-Validation Accuracy = 0.910			Validation Accuracy = 0.929		Validation Accuracy = 0.964
-				
-Model saved					EPOCH 41 ...				EPOCH 41 ...
-						Validation Accuracy = 0.925		Validation Accuracy = 0.964
-						EPOCH 52 ...				EPOCH 52 ...
-						Validation Accuracy = 0.928		Validation Accuracy = 0.967
-						Model saved				Model saved
-
-
-
-
 ```python
 rate = 0.0009
 logits = LeNet(x)
@@ -1074,9 +938,6 @@ print('done')
 
     done
 
-#### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
-
-My final model has validation accuracy of 96.4% and test accuracy of 94.5%.  This is the best result that i could obtained by tweaking BATCH SIZE, EPOCHS and learning rate.
 
 
 ```python
@@ -1273,14 +1134,6 @@ with tf.Session() as sess:
     Test Accuracy = 0.945
 
 
-### Test a Model on New Images
-
-#### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
-
-I downloaded various PNG and GIF files from internet. However the difficulty was in obtaining the images with consistent shape. I downloaded two set of images and tested them separately and the model was able to identify the images.
-
-
-![png](output_27_1.png)
 
 ```python
 # now test with new images
@@ -1296,11 +1149,11 @@ import csv
 #enable inline visualization
 %matplotlib inline
 
-#folder_name = 'images1/'
-#img_labels = np.array([22,35,18,1,18,18,1])
+folder_name = 'images1/'
+img_labels = np.array([22,35,18,1,18,18,1])
 
-folder_name='images2/'
-img_labels = np.array([22,35,15,18,1,37])
+#folder_name='images2/'
+#img_labels = np.array([22,35,15,18,1,37])
 
 
 print(folder_name)
@@ -1348,35 +1201,34 @@ print(my_images_normalized.shape)
 
 ```
 
-    images2/
+    images1/
     index is  0
     label index is  Bumpy road
-    images2/2.png
+    images1/2.png
     index is  1
     label index is  Ahead only
-    images2/3.png
+    images1/3.png
     index is  2
-    label index is  No vehicles
-    images2/4.png
-    index is  3
     label index is  General caution
-    images2/6.png
-    index is  4
+    images1/1 (2).png
+    index is  3
     label index is  Speed limit (30km/h)
-    images2/1.png
+    images1/1b.png
+    index is  4
+    label index is  General caution
+    images1/1.jpg
     index is  5
-    label index is  Go straight or left
-    images2/5.png
-    (6, 32, 32, 1)
+    label index is  General caution
+    images1/6.png
+    index is  6
+    label index is  Speed limit (30km/h)
+    images1/1.png
+    (7, 32, 32, 1)
 
 
 
 ![png](output_27_1.png)
 
-
-#### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
-
-The model was able to accurately predict the results as shown below. I have given below the overall accuracy as well as the accuracy for each of these images
 
 
 ```python
@@ -1457,34 +1309,9 @@ for index in range(no_of_images):
     Image 6
     Image Accuracy = 1.000
     
-#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The Top 5 softmax probabilities are given below.
-```
-Image/Probability --?     1			2		3		4		5
-Bumpy road	 	1.00000000e+00,   1.13607684e-18,   2.77682011e-20,  3.19724472e-21,   2.99252838e-23
-Ahead only          	1.00000000e+00,   1.19742632e-10,   1.18682304e-11,  5.34357714e-12,   1.61243360e-12
-No Vehicles    		9.99940276e-01,   3.90479836e-05,   8.22237689e-06,  5.98722590e-06,   4.44473517e-06
-General Caution		1.00000000e+00,   5.54507640e-36,   4.23992863e-36,  0.00000000e+00,   0.00000000e+00
-Speed limit 30km/h	9.97676194e-01,   2.32379045e-03,   3.97210975e-08,  6.98274424e-11,   5.58187512e-15
-Go straight or left	1.00000000e+00,   1.91925630e-18,   7.73841745e-20,  3.46975026e-24,   1.37621765e-24
-		
-Matched images		22, 29, 26, 25, 28
-          		35, 34, 36,  9,  3
-           		15, 38, 14, 12, 34
-           		18, 26, 27,  0,  1
-           		1,  4, 14, 40,  2
-           		37, 40, 35, 29, 22
-			
-Label definitions:
-#22 - bumpy road
-#35 - Ahead only
-#18 - General caution
-#1 - 30 kms per hour
-#15 - No vehicles
-#37- go straight or left
 
-```
+
 ```python
 #define all required inputs/function
 k_size = 5 # top 5 softmax output
@@ -1504,19 +1331,22 @@ with tf.Session() as sess:
               3.19724472e-21,   2.99252838e-23],
            [  1.00000000e+00,   1.19742632e-10,   1.18682304e-11,
               5.34357714e-12,   1.61243360e-12],
-           [  9.99940276e-01,   3.90479836e-05,   8.22237689e-06,
-              5.98722590e-06,   4.44473517e-06],
+           [  9.99963403e-01,   3.64561020e-05,   1.03646521e-07,
+              1.20610233e-09,   6.23700050e-11],
+           [  9.95573044e-01,   4.42113867e-03,   3.77527635e-06,
+              1.02757645e-06,   9.17257353e-07],
+           [  9.99965906e-01,   3.39920553e-05,   1.38865445e-07,
+              1.34016243e-09,   6.31852140e-11],
            [  1.00000000e+00,   5.54507640e-36,   4.23992863e-36,
               0.00000000e+00,   0.00000000e+00],
            [  9.97676194e-01,   2.32379045e-03,   3.97210975e-08,
-              6.98274424e-11,   5.58187512e-15],
-           [  1.00000000e+00,   1.91925630e-18,   7.73841745e-20,
-              3.46975026e-24,   1.37621765e-24]], dtype=float32), indices=array([[22, 29, 26, 25, 28],
+              6.98274424e-11,   5.58187512e-15]], dtype=float32), indices=array([[22, 29, 26, 25, 28],
            [35, 34, 36,  9,  3],
-           [15, 38, 14, 12, 34],
+           [18, 26, 36, 22, 33],
+           [ 1,  4, 14, 13, 38],
+           [18, 26, 36, 22, 33],
            [18, 26, 27,  0,  1],
-           [ 1,  4, 14, 40,  2],
-           [37, 40, 35, 29, 22]], dtype=int32))
+           [ 1,  4, 14, 40,  2]], dtype=int32))
 
 
 
